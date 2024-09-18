@@ -54,7 +54,6 @@ FreeListCreateFill(
         uint64_t bytes_length
         )
 {   
-    memset(list, 0, bytes_length);
     list->list = calloc(1, bytes_length);
     list->bytes = bytes_length;
 
@@ -140,13 +139,13 @@ FreeListNextFree(
     {
         if(FreeListIsFree(list, i))
         {   
-            if(*found)
+            if(found)
             {   *found = 1;
             }
             return i;
         }
     }
-    if(*found)
+    if(found)
     {   *found = 0;
     }
     return 0;
@@ -166,13 +165,13 @@ FreeListPrevFree(
     {
         if(FreeListIsFree(list, i))
         {
-            if(*found)
+            if(found)
             {   *found = 1;
             }
             return i;
         }
     }
-    if(*found)
+    if(found)
     {   *found = 0;
     }
     return 0;
@@ -208,5 +207,5 @@ FreeListIsFree(
 {
     const unsigned int CHAR_BIT_COUNT = 8;
     const uint8_t *i = list->list + (index / CHAR_BIT_COUNT);
-    return *i & (1 << (index % CHAR_BIT_COUNT));
+    return (*i & (1 << (index % CHAR_BIT_COUNT))) == 0;
 }
